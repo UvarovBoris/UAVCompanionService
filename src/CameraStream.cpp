@@ -24,11 +24,24 @@ void CameraStream::start() {
 
     // Stream settings
     const std::string host = "127.0.0.1"; // IP-address receiver (GCS)
-    const int port = 5600; // UDP-port
+    const int port = 5601; // UDP-port
 
+    /*
     std::string pipeline_str =
             "v4l2src device=/dev/video0 ! image/jpeg,width=1280,height=720,framerate=30/1 ! "
             "vajpegdec ! "
+            "vapostproc ! video/x-raw ! "
+            "cairooverlay name=osd ! "
+            "vapostproc ! video/x-raw ! "
+            "vah264lpenc bitrate=2000 ! "
+            "h264parse ! "
+            "rtph264pay config-interval=1 pt=96 ! "
+            "udpsink host=" + host + " port=" + std::to_string(port);
+*/
+    std::string pipeline_str =
+            "udpsrc port=5600 caps=\"application/x-rtp,media=video,clock-rate=90000,encoding-name=H264,payload=96\" ! "
+            "rtph264depay ! h264parse ! "
+            "vah264dec ! "
             "vapostproc ! video/x-raw ! "
             "cairooverlay name=osd ! "
             "vapostproc ! video/x-raw ! "
@@ -62,7 +75,7 @@ void CameraStream::start() {
     busWatchId_ = gst_bus_add_watch(bus, bus_callback, loop_);
     gst_object_unref(bus);
 
-    std::cout << "[Pipeline] Starting playback and video egress to 127.0.0.1:5600...\n";
+    std::cout << "[Pipeline] Starting playback and video egress to "<< host << ":" << port << std::endl;
     // Change pipeline state to PLAYING (streaming start)
     GstStateChangeReturn ret = gst_element_set_state(pipeline_, GST_STATE_PLAYING);
     if (ret == GST_STATE_CHANGE_FAILURE) {
