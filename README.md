@@ -22,7 +22,9 @@ setup ardupilot + gazebo
 https://ardupilot.org/dev/docs/sitl-with-gazebo.html
 
 run
-sim_vehicle.py -v ArduCopter -f gazebo-iris --model JSON
+sim_vehicle.py -v ArduCopter -f gazebo-iris --model JSON --out=udp:127.0.0.1:14551
+
+--out for send mavlink in MavlinkReceiver.cpp
 
 update camera fps in 
 

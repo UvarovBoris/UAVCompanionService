@@ -9,7 +9,7 @@
 int main() {
     TelemetryStore telemetryStore;
 
-    MavlinkReceiver mavlinkReceiver(14550, telemetryStore);
+    MavlinkReceiver mavlinkReceiver(14551, telemetryStore);
     try {
         mavlinkReceiver.start();
     } catch (const std::system_error &e) {
