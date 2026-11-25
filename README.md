@@ -23,6 +23,7 @@ https://ardupilot.org/dev/docs/sitl-with-gazebo.html
 
 run
 sim_vehicle.py -v ArduCopter -f gazebo-iris --model JSON --out=udp:127.0.0.1:14551
+sim_vehicle.py -v ArduCopter -f gazebo-iris --model JSON --no-mavproxy
 
 --out for send mavlink in MavlinkReceiver.cpp
 
@@ -35,3 +36,13 @@ https://docs.qgroundcontrol.com/master/en/qgc-user-guide/getting_started/downloa
 4) Install mavlink
 cd ~/mavlink
 git clone https://github.com/mavlink/c_library_v2.git
+
+5) Install mavlink-router
+sudo apt install -y git meson ninja-build pkg-config gcc g++ systemd-dev libsystemd-dev
+git clone https://github.com/mavlink-router/mavlink-router.git
+cd mavlink-router
+git submodule update --init --recursive
+
+meson setup build .
+ninja -C build
+sudo ninja -C build install
