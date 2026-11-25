@@ -3,10 +3,19 @@
 #include <system_error>
 
 #include "CameraStream.h"
+#include "MavlinkReceiver.h"
 #include "TelemetryStore.h"
 
 int main() {
     TelemetryStore telemetryStore;
+
+    MavlinkReceiver mavlinkReceiver(14550, telemetryStore);
+    try {
+        mavlinkReceiver.start();
+    } catch (const std::system_error &e) {
+        std::cerr << "[MAVLink Error] " << e.what() << '\n';
+        return 1;
+    }
 
     CameraStream cameraStream(telemetryStore);
     try {
@@ -20,6 +29,7 @@ int main() {
     std::cin.get();
 
     cameraStream.stop();
+    mavlinkReceiver.stop();
 
     return 0;
 }

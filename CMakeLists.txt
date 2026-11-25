@@ -14,12 +14,14 @@ add_executable(UAVCompanionService
         src/TelemetryData.h
         src/TelemetryStore.h
         src/CameraStream.h
+        src/MavlinkReceiver.cpp
 )
 
 target_compile_options(UAVCompanionService PRIVATE -Wall -Wextra ${GST_CFLAGS_OTHER})
 
 target_include_directories(UAVCompanionService SYSTEM PRIVATE
         ${GST_INCLUDE_DIRS}
+        /home/boris/mavlink/c_library_v2
 )
 
 target_link_libraries(UAVCompanionService PRIVATE ${GST_LIBRARIES})

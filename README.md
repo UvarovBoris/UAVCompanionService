@@ -29,3 +29,7 @@ update camera fps in
 3) QGroundControll
 install
 https://docs.qgroundcontrol.com/master/en/qgc-user-guide/getting_started/download_and_install.html
+
+4) Install mavlink
+cd ~/mavlink
+git clone https://github.com/mavlink/c_library_v2.git
